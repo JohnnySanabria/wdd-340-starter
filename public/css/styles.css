@@ -4,3 +4,83 @@
 *:after {
   box-sizing: border-box;
 }
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url('../images/site/checkerboard.jpg');
+}
+
+/* Navbar */
+nav {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+#top-header {
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+#top-header a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.banner>img {
+  width: 100%;
+  height: auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff;
+
+  margin-right: 40px;
+  margin-left: 40px;
+}
+
+.details-container {
+  display: grid;
+  margin: 20px 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.details-container>h3 {
+  margin: 20px;
+  ;
+}
+
+.upgrade-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.upgrade-item {
+
+  background-color: lightblue;
+}
+
+.upgrade-item>figcaption {
+  background-color: white;
+}
