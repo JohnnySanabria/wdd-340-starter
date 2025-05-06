@@ -118,13 +118,17 @@ body {
   text-align: center;
 }
 
-.upgrade-item {
-
+figure>img {
   background-color: lightblue;
+  padding: 25%;
 }
 
 .upgrade-item>figcaption {
   background-color: white;
+}
+
+.reviews>ul>li {
+  padding: 10px;
 }
 
 @media screen and (max-width: 600px) {
