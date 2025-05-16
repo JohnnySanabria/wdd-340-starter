@@ -26,6 +26,11 @@ nav ul {
   cursor: pointer;
 }
 
+nav a {
+  text-decoration: none;
+  color: #fff;
+}
+
 #top-header {
   background-color: #f8f8f8;
   padding: 20px;
