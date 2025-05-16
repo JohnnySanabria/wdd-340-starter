@@ -136,6 +136,34 @@ figure>img {
   padding: 10px;
 }
 
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 300px;
+}
+
+#inv-display>li {
+  list-style: none;
+  margin: 25px;
+  padding: 10px;
+  background-color: hsla(187, 79%, 59%, 0.555);
+}
+
+#inv-display>li a {
+  text-decoration: none;
+  color: #333;
+}
+
+#inv-display>li>div>span {
+  font-weight: bolder;
+  font-size: 1.5em;
+}
+
+
 @media screen and (max-width: 600px) {
   .details-container {
     grid-template-columns: 1fr;
