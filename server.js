@@ -42,6 +42,13 @@ app.use(async (req, res, next) => {
  *************************/
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
+  if (
+    req.originalUrl == "/favicon.ico" ||
+    req.originalUrl ==
+      "/.well-known/appspecific/com.chrome.devtools.json"
+  ) {
+    return;
+  }
   console.error(
     `Error at: "${req.originalUrl}": ${err.message}`
   );
