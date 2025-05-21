@@ -1,5 +1,7 @@
 <!-- Content Heading -->
-<% if (!title) { %> res.redirect('/') <% } %>
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
 
 <!-- Main content -->
 <%- details %>

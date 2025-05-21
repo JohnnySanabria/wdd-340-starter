@@ -86,22 +86,22 @@ Util.buildClassificationGrid = async function (data) {
  * ************************************ */
 Util.buildInventoryDetails = async function (data) {
   return `<div class="details">
-    <h2>${data.inv_year} ${data.inv_make} ${
-    data.inv_model
-  }</h2>
     <div class="details-image">
       <img src="${data.inv_image}" alt="Image of ${
     data.inv_make
   } ${data.inv_model} on CSE Motors" />
     </div>
     <div class="details-info">
+    <h2>${data.inv_year} ${data.inv_make} ${
+    data.inv_model
+  } details</h2>
       <p><strong>Price:</strong> $${new Intl.NumberFormat(
         "en-US"
       ).format(data.inv_price)}</p>
       <p><strong>Color:</strong> ${data.inv_color}</p>
       <p><strong>Mileage:</strong> ${new Intl.NumberFormat(
         "en-US"
-      ).format(data.inv_mileage)} miles</p>
+      ).format(data.inv_miles)} miles</p>
       <p><strong>Description:</strong> ${
         data.inv_description
       }</p>

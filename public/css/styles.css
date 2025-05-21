@@ -169,6 +169,35 @@ figure>img {
   font-size: 1.5em;
 }
 
+.details {
+  display: grid;
+  max-width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.details-image {
+  padding: 20px;
+  text-align: center;
+}
+
+.details-info {
+  width: 80%;
+  padding: 20px;
+  justify-self: left;
+  text-align: left;
+}
+
+.details-info>p {
+  padding: 10px;
+}
+
+.details-info p:nth-child(even) {
+  background-color: #c4c2c2;
+}
+
 
 @media screen and (max-width: 600px) {
   .details-container {
@@ -178,6 +207,11 @@ figure>img {
 
   .upgrade-items {
     grid-template-columns: 1fr;
+  }
+
+  .details-image>img {
+    max-width: 250px;
+    max-height: auto;
   }
 
 }
