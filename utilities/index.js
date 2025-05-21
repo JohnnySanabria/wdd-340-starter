@@ -6,7 +6,7 @@ const Util = {};
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
-  console.log("getNav data", data);
+
   let list = "<ul>";
   list += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
@@ -79,6 +79,33 @@ Util.buildClassificationGrid = async function (data) {
       '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   }
   return grid;
+};
+
+/* **************************************
+ * Build the details view HTML
+ * ************************************ */
+Util.buildInventoryDetails = async function (data) {
+  return `<div class="details">
+    <h2>${data.inv_year} ${data.inv_make} ${
+    data.inv_model
+  }</h2>
+    <div class="details-image">
+      <img src="${data.inv_image}" alt="Image of ${
+    data.inv_make
+  } ${data.inv_model} on CSE Motors" />
+    </div>
+    <div class="details-info">
+      <p><strong>Price:</strong> $${new Intl.NumberFormat(
+        "en-US"
+      ).format(data.inv_price)}</p>
+      <p><strong>Color:</strong> ${data.inv_color}</p>
+      <p><strong>Mileage:</strong> ${new Intl.NumberFormat(
+        "en-US"
+      ).format(data.inv_mileage)} miles</p>
+      <p><strong>Description:</strong> ${
+        data.inv_description
+      }</p>
+    </div>`;
 };
 
 /* ****************************************

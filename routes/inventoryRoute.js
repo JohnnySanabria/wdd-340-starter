@@ -8,4 +8,9 @@ router.get(
   invController.buildByClassificationId
 );
 
+router.get(
+  "/detail/:vehicleId",
+  invController.buildByInventoryId
+);
+
 module.exports = router;

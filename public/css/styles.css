@@ -26,6 +26,12 @@ nav ul {
   cursor: pointer;
 }
 
+nav a:hover {
+  background-color: #fff;
+  padding: 3px;
+  color: #333;
+}
+
 nav a {
   text-decoration: none;
   color: #fff;
