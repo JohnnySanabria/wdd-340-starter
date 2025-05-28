@@ -55,7 +55,7 @@ app.get(
 );
 app.use("/inv", utilities.handleErrors(inventoryRoute));
 app.use("/error", utilities.handleErrors(errorRoute));
-app.use("/account", utilities.handleErrors(accountRoute));
+app.use("/account", accountRoute);
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({
