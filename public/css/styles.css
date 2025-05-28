@@ -204,6 +204,39 @@ figure>img {
   font-weight: bolder;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #dfdddd;
+}
+
+form * {
+  margin: 10px;
+
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form input[type="password"] {
+  padding: 10px;
+  width: 20%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #34b7f1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 @media screen and (max-width: 600px) {
   .details-container {
@@ -220,4 +253,10 @@ figure>img {
     max-height: auto;
   }
 
+  form input[type="text"],
+  form input[type="number"],
+  form input[type="email"],
+  form input[type="password"] {
+    width: 80%;
+  }
 }
