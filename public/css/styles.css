@@ -237,6 +237,16 @@ form button {
   cursor: pointer;
 }
 
+input:required:invalid,
+input:focus:invalid {
+  border-color: red;
+}
+
+input:required:valid {
+  border-color: green;
+}
+
+
 
 @media screen and (max-width: 600px) {
   .details-container {
