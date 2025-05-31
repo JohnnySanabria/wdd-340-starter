@@ -25,6 +25,7 @@ invCont.buildByClassificationId = async function (
     title: className + " vehicles",
     nav,
     grid,
+    errors: null,
   });
 };
 
@@ -50,6 +51,7 @@ invCont.buildByInventoryId = async function (
     title: className,
     nav,
     details,
+    errors: null,
   });
 };
 
