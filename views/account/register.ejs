@@ -13,21 +13,24 @@
   <input
     type="text"
     name="account_firstname"
-    id="account_firstname"
+    id="accountFirstname"
     placeholder="First Name"
-    required />
+    required
+    value="<%= locals.account_firstname %>" />
   <input
     type="text"
     name="account_lastname"
     id="account_lastname"
     placeholder="Last Name"
-    required />
+    required
+    value="<%= locals.account_lastname %>" />
   <input
     type="email"
     name="account_email"
     id="account_email"
     placeholder="Email"
-    required />
+    required
+    value="<%= locals.account_email %>" />
   <input
     type="password"
     name="account_password"

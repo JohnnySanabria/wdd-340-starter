@@ -2,12 +2,13 @@
 <h1><%= title %></h1>
 <% } else { res.redirect('/') } %> <%- messages() %>
 <!-- Login Form -->
-<form action="/account/login" method="post">
+<form id="loginForm" action="/account/login" method="post">
   <input
     type="email"
     name="account_email"
     id="account_email"
     placeholder="Email"
+    value="<%= locals.account_email %>"
     required />
 
   <input
