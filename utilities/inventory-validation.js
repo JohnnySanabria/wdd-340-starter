@@ -52,6 +52,14 @@ validate.inventoryRules = () => {
       .isLength({ min: 10 })
       .withMessage("Please provide a description."),
 
+    // inv_color is required and must be a string
+    body("inv_color")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 3 })
+      .withMessage("Please provide a color."),
+
     // inv_image is required and must be a valid URL
     body("inv_image")
       .trim()
@@ -79,6 +87,26 @@ validate.inventoryRules = () => {
  *  Validate inventory data
  * ******************************* */
 validate.checkInvData = async (req, res, next) => {
+  const {
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id,
+  } = req.body;
+
+  let cleaned_inv_image = inv_image.replace(/&#x2F;/g, "/");
+
+  let cleaned_inv_thumbnail = inv_thumbnail.replace(
+    /&#x2F;/g,
+    "/"
+  );
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
@@ -89,6 +117,16 @@ validate.checkInvData = async (req, res, next) => {
       nav,
       classificationOptions,
       errors: errors,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image: cleaned_inv_image,
+      inv_thumbnail: cleaned_inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
     });
   }
   next();

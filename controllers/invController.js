@@ -20,7 +20,15 @@ invCont.buildByClassificationId = async function (
     data
   );
   let nav = await utilities.getNav();
-  const className = data[0]?.classification_name ?? "Toy";
+  let classification = (
+    await invModel.getClassifications()
+  ).rows.find(
+    (item) => item.classification_id === classification_id
+  );
+  const className =
+    data[0]?.classification_name ??
+    classification?.classification_name ??
+    "";
   res.render("./inventory/classification", {
     title: className + " vehicles",
     nav,
