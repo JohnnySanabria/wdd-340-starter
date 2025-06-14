@@ -1,0 +1,90 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+<!-- Messages -->
+<%- messages() %>
+<!-- Errors -->
+<% if (errors != null) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %> <% if (error.msg
+  != 'Invalid value') { %>
+
+  <li><%= error.msg %></li>
+  <% }}) %>
+</ul>
+<% } %>
+<form
+  id="addVehicleForm"
+  action="/inv/add-vehicle"
+  method="post">
+  <select
+    id="classification_id"
+    name="classification_id"
+    required>
+    <option value="">Select a classification</option>
+    <%- classificationOptions %>
+  </select>
+
+  <input
+    type="text"
+    id="inv_make"
+    name="inv_make"
+    placeholder="Make"
+    value="<%= locals.inv_make %>"
+    required />
+  <input
+    type="text"
+    id="inv_model"
+    name="inv_model"
+    placeholder="Model"
+    value="<%= locals.inv_model %>"
+    required />
+  <input
+    type="number"
+    id="inv_year"
+    name="inv_year"
+    placeholder="Year"
+    value="<%= locals.inv_year %>"
+    required />
+  <input
+    type="text"
+    id="inv_color"
+    name="inv_color"
+    placeholder="Color"
+    value="<%= locals.inv_color %>"
+    required />
+  <input
+    type="number"
+    id="inv_miles"
+    name="inv_miles"
+    placeholder="Mileage"
+    value="<%= locals.inv_miles %>"
+    required />
+  <input
+    type="number"
+    id="inv_price"
+    name="inv_price"
+    placeholder="Price"
+    value="<%= locals.inv_price %>"
+    required />
+  <textarea
+    id="inv_description"
+    name="inv_description"
+    placeholder="Description"
+    required></textarea>
+  <input
+    type="text"
+    id="inv_image"
+    name="inv_image"
+    placeholder="Image Path"
+    value="<%= locals.inv_image %>"
+    required />
+  <input
+    type="text"
+    id="inv_thumbnail"
+    name="inv_thumbnail"
+    placeholder="Thumbnail Path"
+    value="<%= locals.inv_thumbnail %>"
+    required />
+  <button type="submit">Add Vehicle</button>
+</form>

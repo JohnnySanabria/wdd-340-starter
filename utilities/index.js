@@ -75,7 +75,7 @@ Util.buildClassificationGrid = async function (data) {
     });
     grid += "</ul>";
   } else {
-    grid +=
+    grid =
       '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   }
   return grid;
@@ -106,6 +106,34 @@ Util.buildInventoryDetails = async function (data) {
         data.inv_description
       }</p>
     </div>`;
+};
+
+Util.buildInventoryManagement = async function (data) {
+  return `
+  <p><a href="../../inv/add-classification" class="button">Add New Classification</a></p>
+  <p><a href="../../inv/add-vehicle" class="button">Add New Vehicle</a></p>
+  `;
+};
+
+Util.buildAddClassification = async function () {
+  return `
+  <form action="/inv/add-classification" method="post">
+    <input type="text" id="classification_name" name="classification_name" placeholder="Classification name" required>
+    <button type="submit">Add Classification</button>
+  </form>`;
+};
+
+Util.buildClassificationOptions = async function () {
+  return await invModel
+    .getClassifications()
+    .then((data) => {
+      return data.rows
+        .map(
+          (row) =>
+            `<option value="${row.classification_id}">${row.classification_name}</option>`
+        )
+        .join("");
+    });
 };
 
 /* ****************************************
