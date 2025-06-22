@@ -12,6 +12,7 @@
 </ul>
 <% } %>
 <form action="/account/register" method="post">
+  <label for="accountFirstname">First Name</label>
   <input
     type="text"
     name="account_firstname"
@@ -19,6 +20,7 @@
     placeholder="First Name"
     required
     value="<%= locals.account_firstname %>" />
+  <label for="accountLastname">Last Name</label>
   <input
     type="text"
     name="account_lastname"
@@ -26,6 +28,7 @@
     placeholder="Last Name"
     required
     value="<%= locals.account_lastname %>" />
+  <label for="account_email">Email</label>
   <input
     type="email"
     name="account_email"
@@ -33,6 +36,7 @@
     placeholder="Email"
     required
     value="<%= locals.account_email %>" />
+  <label for="account_password">Password</label>
   <input
     type="password"
     name="account_password"

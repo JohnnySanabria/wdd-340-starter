@@ -233,11 +233,15 @@ form select {
 
 form button {
   padding: 10px 20px;
-  background-color: #34b7f1;
+  background-color: #213edd;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+form label {
+  display: none;
 }
 
 input:required:invalid,

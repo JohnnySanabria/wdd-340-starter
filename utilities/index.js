@@ -113,6 +113,7 @@ Util.buildInventoryDetails = async function (data) {
 Util.buildAddClassification = async function () {
   return `
   <form action="/inv/add-classification" method="post">
+    <label for="classification_name">Classification Name:</label>
     <input type="text" id="classification_name" name="classification_name" placeholder="Classification name" required>
     <button type="submit">Add Classification</button>
   </form>`;
