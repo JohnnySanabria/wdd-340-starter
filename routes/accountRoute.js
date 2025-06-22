@@ -4,14 +4,19 @@ const utilities = require("../utilities/");
 const accValidate = require("../utilities/account-validation");
 const accountController = require("../controllers/accountController");
 
+router.get(
+  "/",
+  utilities.checkLogin,
+  accountController.buildManagement
+);
 router.get("/login", accountController.buildLogin);
 // Process the login attempt
-router.post("/login", 
+router.post(
+  "/login",
   accValidate.loginRules(),
   accValidate.checkLoginData,
-  (req, res) => {
-  res.status(200).send("login process");
-});
+  utilities.handleErrors(accountController.accountLogin)
+);
 router.get("/register", accountController.buildRegister);
 router.post(
   "/register",

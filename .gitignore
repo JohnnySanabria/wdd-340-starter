@@ -16,3 +16,5 @@ node_modules
 **/.DS_Store
 
 pnpm-lock.yaml
+
+account_login_creds.txt
