@@ -110,13 +110,6 @@ Util.buildInventoryDetails = async function (data) {
     </div>`;
 };
 
-Util.buildInventoryManagement = async function (data) {
-  return `
-  <p><a href="../../inv/add-classification" class="button">Add New Classification</a></p>
-  <p><a href="../../inv/add-vehicle" class="button">Add New Vehicle</a></p>
-  `;
-};
-
 Util.buildAddClassification = async function () {
   return `
   <form action="/inv/add-classification" method="post">

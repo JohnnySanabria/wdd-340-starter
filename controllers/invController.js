@@ -71,15 +71,15 @@ invCont.buildInventoryManagement = async function (
   res,
   next
 ) {
-  const management =
-    await utilities.buildInventoryManagement();
-
   let nav = await utilities.getNav();
+
+  const classificationOptions =
+    await utilities.buildClassificationOptions();
 
   res.render("./inventory/management", {
     title: "Inventory Management",
     nav,
-    management,
+    classificationOptions,
     errors: null,
   });
 };
@@ -137,8 +137,6 @@ invCont.addClassification = async function (
   const nav = await utilities.getNav();
   const addClassification =
     await utilities.buildAddClassification();
-  const management =
-    await utilities.buildInventoryManagement();
   if (result) {
     req.flash(
       "notice",
@@ -147,7 +145,6 @@ invCont.addClassification = async function (
     res.status(201).render("./inventory/management", {
       title: "Inventory Management",
       nav,
-      management,
       errors: null,
     });
   } else {
@@ -193,14 +190,11 @@ invCont.addVehicle = async function (req, res, next) {
   const classificationOptions =
     await utilities.buildClassificationOptions();
 
-  const management =
-    await utilities.buildInventoryManagement();
   if (result) {
     req.flash("notice", `Vehicle was successfully added.`);
     res.status(201).render("./inventory/management", {
       title: "Inventory Management",
       nav,
-      management,
       errors: null,
     });
   } else {
@@ -214,6 +208,24 @@ invCont.addVehicle = async function (req, res, next) {
       classificationOptions,
       errors: result.errors,
     });
+  }
+};
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(
+    req.params.classificationId
+  );
+  const invData =
+    await invModel.getInventoryByClassificationId(
+      classification_id
+    );
+  if (invData[0].inv_id) {
+    return res.json(invData);
+  } else {
+    next(new Error("No data returned"));
   }
 };
 
