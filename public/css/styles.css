@@ -230,6 +230,7 @@ form select {
   border: 1px solid #ccc;
 }
 
+
 form button {
   padding: 10px 20px;
   background-color: #34b7f1;
@@ -249,7 +250,6 @@ input:required:valid {
 }
 
 
-
 @media screen and (max-width: 600px) {
   .details-container {
     grid-template-columns: 1fr;
@@ -262,13 +262,23 @@ input:required:valid {
 
   .details-image>img {
     max-width: 250px;
-    max-height: auto;
+
+  }
+
+  #inv-display>li {
+    max-width: 200px;
+  }
+
+  #inv-display>li>a>img {
+    max-width: 80%;
   }
 
   form input[type="text"],
   form input[type="number"],
   form input[type="email"],
-  form input[type="password"] {
+  form input[type="password"],
+  form textarea,
+  form select {
     width: 80%;
   }
 }

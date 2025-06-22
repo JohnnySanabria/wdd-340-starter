@@ -71,8 +71,9 @@
     id="inv_description"
     name="inv_description"
     placeholder="Description"
-    value="<%= locals.inv_description %>"
-    required></textarea>
+    required>
+<%= locals.inv_description %>
+  </textarea>
   <input
     type="text"
     id="inv_image"
@@ -89,3 +90,19 @@
     required />
   <button type="submit">Add Vehicle</button>
 </form>
+<script>
+  const select = document.getElementById(
+    "classification_id"
+  );
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedValue = localStorage.getItem(
+      "classification_id"
+    );
+    if (savedValue) select.value = savedValue;
+  });
+
+  select.addEventListener("change", () => {
+    localStorage.setItem("classification_id", select.value);
+  });
+</script>
