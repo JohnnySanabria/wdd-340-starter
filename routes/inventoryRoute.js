@@ -38,4 +38,9 @@ router.get(
   utilities.handleErrors(invController.getInventoryJSON)
 );
 
+router.get(
+  "/edit/:inventoryId",
+  utilities.handleErrors(invController.buildEditVehicle)
+);
+
 module.exports = router;

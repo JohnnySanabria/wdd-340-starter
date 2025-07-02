@@ -263,6 +263,16 @@ input:required:valid {
   border-color: green;
 }
 
+#inventoryDisplay {
+  margin-top: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
 
 @media screen and (max-width: 600px) {
   .details-container {

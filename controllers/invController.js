@@ -187,8 +187,6 @@ invCont.addVehicle = async function (req, res, next) {
   );
 
   const nav = await utilities.getNav();
-  const classificationOptions =
-    await utilities.buildClassificationOptions();
 
   if (result) {
     req.flash("notice", `Vehicle was successfully added.`);
@@ -202,6 +200,8 @@ invCont.addVehicle = async function (req, res, next) {
       "notice",
       "Sorry, there was an error adding the vehicle."
     );
+    const classificationOptions =
+      await utilities.buildClassificationOptions();
     res.render("./inventory/add-vehicle", {
       title: "Add Vehicle",
       nav,
@@ -227,6 +227,43 @@ invCont.getInventoryJSON = async (req, res, next) => {
   } else {
     next(new Error("No data returned"));
   }
+};
+
+/* ***************************
+ *  Build edit vehicle view
+ * ************************** */
+invCont.buildEditVehicle = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inventoryId);
+
+  let nav = await utilities.getNav();
+
+  let data = await invModel.getInventoryByInventoryId(
+    inv_id
+  );
+  data = data[0];
+  console.log("Edit Vehicle", data);
+  let name = `${data.inv_year} ${data.inv_make} ${data.inv_model}`;
+
+  const classificationOptions =
+    await utilities.buildClassificationOptions();
+
+  res.render("./inventory/edit-vehicle", {
+    title: "Edit Vehicle - " + name,
+    nav,
+    classificationOptions,
+    inv_id: data.inv_id,
+    inv_make: data.inv_make,
+    inv_model: data.inv_model,
+    inv_year: data.inv_year,
+    inv_description: data.inv_description,
+    inv_image: data.inv_image,
+    inv_thumbnail: data.inv_thumbnail,
+    inv_price: data.inv_price,
+    inv_miles: data.inv_miles,
+    inv_color: data.inv_color,
+    classification_id: data.classification_id,
+    errors: null,
+  });
 };
 
 module.exports = invCont;
