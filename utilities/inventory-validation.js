@@ -169,4 +169,56 @@ validate.checkClassificationData = async (
   next();
 };
 
+/* ********************************
+ *  Validate update inventory data
+ * ******************************* */
+validate.checkUpdateInvData = async (req, res, next) => {
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id,
+  } = req.body;
+
+  let cleaned_inv_image = inv_image.replace(/&#x2F;/g, "/");
+
+  let cleaned_inv_thumbnail = inv_thumbnail.replace(
+    /&#x2F;/g,
+    "/"
+  );
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    const classificationOptions =
+      await utilities.buildClassificationOptions();
+    let name = `${inv_year} ${inv_make} ${inv_model}`;
+    return res.render("inventory/edit-vehicle", {
+      title: "Edit Vehicle - " + name,
+      nav,
+      classificationOptions,
+      errors: errors,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image: cleaned_inv_image,
+      inv_thumbnail: cleaned_inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    });
+  }
+  next();
+};
+
 module.exports = validate;

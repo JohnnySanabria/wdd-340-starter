@@ -273,6 +273,11 @@ td {
   border: 1px solid black;
 }
 
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 
 @media screen and (max-width: 600px) {
   .details-container {

@@ -16,7 +16,7 @@
 
 <form
   id="editVehicleForm"
-  action="/inv/edit-vehicle"
+  action="/inv/edit"
   method="post">
   <label for="classification_id">Classification</label>
   <select
@@ -24,7 +24,7 @@
     id="classification_id"
     name="classification_id"
     required>
-    <option value="">Select a classification</option>
+    
     <%- classificationOptions %>
   </select>
   <label for="inv_make">Make</label>
@@ -99,21 +99,15 @@
     placeholder="Thumbnail Path"
     value="<%= locals.inv_thumbnail %>"
     required />
-  <button type="submit">Update Vehicle</button>
+  <button type="submit" disabled>Update Vehicle</button>
+  <input type="hidden" name="inv_id"
+  <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+  <% } %>>
+  <input type="hidden" id="classification_id_hidden"
+  <% if(locals.classification_id) { %> value="<%= locals.classification_id %>"
+  <% } %>>
 </form>
 <script>
-  const select = document.getElementById(
-    "classification_id"
-  );
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const savedValue = localStorage.getItem(
-      "classification_id"
-    );
-    if (savedValue) select.value = savedValue;
-  });
-
-  select.addEventListener("change", () => {
-    localStorage.setItem("classification_id", select.value);
-  });
+  
 </script>
+<script src="../../js/inv-update.js"></script>

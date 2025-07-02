@@ -137,6 +137,8 @@ invCont.addClassification = async function (
   const nav = await utilities.getNav();
   const addClassification =
     await utilities.buildAddClassification();
+  const classificationOptions =
+    await utilities.buildClassificationOptions();
   if (result) {
     req.flash(
       "notice",
@@ -145,6 +147,7 @@ invCont.addClassification = async function (
     res.status(201).render("./inventory/management", {
       title: "Inventory Management",
       nav,
+      classificationOptions,
       errors: null,
     });
   } else {
@@ -187,12 +190,14 @@ invCont.addVehicle = async function (req, res, next) {
   );
 
   const nav = await utilities.getNav();
-
+  const classificationOptions =
+    await utilities.buildClassificationOptions();
   if (result) {
     req.flash("notice", `Vehicle was successfully added.`);
     res.status(201).render("./inventory/management", {
       title: "Inventory Management",
       nav,
+      classificationOptions,
       errors: null,
     });
   } else {
@@ -264,6 +269,79 @@ invCont.buildEditVehicle = async function (req, res, next) {
     classification_id: data.classification_id,
     errors: null,
   });
+};
+
+// /* ***************************
+//  *  Edit Vehicle
+//  *************************** */
+invCont.editVehicle = async function (req, res, next) {
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id,
+  } = req.body;
+  const result = await invModel.updateVehicle(
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+  );
+
+  const nav = await utilities.getNav();
+  const classificationOptions =
+    await utilities.buildClassificationOptions();
+
+  if (result) {
+    req.flash(
+      "notice",
+      `Vehicle was successfully updated.`
+    );
+    res.status(201).render("./inventory/management", {
+      title: "Inventory Management",
+      nav,
+      classificationOptions,
+      errors: null,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, there was an error adding the vehicle."
+    );
+    let name = `${inv_year} ${inv_make} ${inv_model}`;
+
+    res.render("./inventory/edit-vehicle", {
+      title: "Edit Vehicle - " + name,
+      nav,
+      classificationOptions,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+      errors: null,
+    });
+  }
 };
 
 module.exports = invCont;

@@ -42,5 +42,11 @@ router.get(
   "/edit/:inventoryId",
   utilities.handleErrors(invController.buildEditVehicle)
 );
+router.post(
+  "/edit/",
+  invValidate.inventoryRules(),
+  invValidate.checkUpdateInvData,
+  utilities.handleErrors(invController.editVehicle)
+);
 
 module.exports = router;
