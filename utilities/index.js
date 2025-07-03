@@ -176,4 +176,25 @@ Util.checkJWT = (req, res, next) => {
   }
 };
 
+/* ****************************************
+ *  Middleware to enforce employee or admin access
+ *  Used in routes that require employee or admin access
+ **************************************** */
+Util.checkEmployeeOrAdmin = (req, res, next) => {
+  console.log(res.locals.accountData);
+  if (
+    res.locals.accountData &&
+    (res.locals.accountData.account_type === "Employee" ||
+      res.locals.accountData.account_type === "Admin")
+  ) {
+    next();
+  } else {
+    req.flash(
+      "notice",
+      "You do not have permission to access that resource."
+    );
+    return res.redirect("/account/login");
+  }
+};
+
 module.exports = Util;

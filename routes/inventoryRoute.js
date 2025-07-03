@@ -15,20 +15,23 @@ router.get(
   invController.buildByInventoryId
 );
 
-router.get("/", invController.buildInventoryManagement);
+router.get("/", utilities.checkEmployeeOrAdmin, invController.buildInventoryManagement);
 router.get(
   "/add-classification",
+  utilities.checkEmployeeOrAdmin,
   invController.buildAddClassification
 );
 router.post(
   "/add-classification",
+  utilities.checkEmployeeOrAdmin,
   invValidate.classificationRules(),
   invValidate.checkClassificationData,
   invController.addClassification
 );
-router.get("/add-vehicle", invController.buildAddVehicle);
+router.get("/add-vehicle", utilities.checkEmployeeOrAdmin, invController.buildAddVehicle);
 router.post(
   "/add-vehicle",
+  utilities.checkEmployeeOrAdmin,
   invValidate.inventoryRules(),
   invValidate.checkInvData,
   invController.addVehicle
@@ -40,10 +43,12 @@ router.get(
 
 router.get(
   "/edit/:inventoryId",
+  utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.buildEditVehicle)
 );
 router.post(
   "/edit/",
+  utilities.checkEmployeeOrAdmin,
   invValidate.inventoryRules(),
   invValidate.checkUpdateInvData,
   utilities.handleErrors(invController.editVehicle)
@@ -51,10 +56,12 @@ router.post(
 
 router.get(
   "/delete/:inventoryId",
+  utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.buildDeleteVehicle)
 );
 router.post(
   "/delete/",
+  utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.deleteVehicle)
 );
 

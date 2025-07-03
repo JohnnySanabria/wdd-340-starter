@@ -164,10 +164,22 @@ async function buildManagement(req, res, next) {
   });
 }
 
+/* ****************************************
+ *  Process logout request
+ * *************************************** */
+async function accountLogout(req, res) {
+  res.clearCookie("jwt");
+  res.locals.accountData = null;
+  res.locals.loggedin = 0;
+  req.flash("notice", "You have been logged out.");
+  return res.redirect("/account/login");
+}
+
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   buildManagement,
   accountLogin,
+  accountLogout,
 };

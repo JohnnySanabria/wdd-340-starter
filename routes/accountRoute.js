@@ -17,6 +17,7 @@ router.post(
   accValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 );
+router.get("/logout", utilities.checkLogin, accountController.accountLogout);
 router.get("/register", accountController.buildRegister);
 router.post(
   "/register",
