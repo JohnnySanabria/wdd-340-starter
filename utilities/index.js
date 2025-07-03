@@ -155,7 +155,8 @@ Util.handleErrors = (fn) => (req, res, next) =>
 /* ****************************************
  * Middleware to check token validity
  **************************************** */
-Util.checkJWTToken = (req, res, next) => {
+Util.checkJWT = (req, res, next) => {
+  console.log("Checking JWT");
   if (req.cookies.jwt) {
     jwt.verify(
       req.cookies.jwt,
@@ -166,6 +167,7 @@ Util.checkJWTToken = (req, res, next) => {
           res.clearCookie("jwt");
           return res.redirect("/account/login");
         }
+        console.log("Setting locals.loggedIn to 1");
         res.locals.accountData = accountData;
         res.locals.loggedin = 1;
         next();

@@ -49,4 +49,13 @@ router.post(
   utilities.handleErrors(invController.editVehicle)
 );
 
+router.get(
+  "/delete/:inventoryId",
+  utilities.handleErrors(invController.buildDeleteVehicle)
+);
+router.post(
+  "/delete/",
+  utilities.handleErrors(invController.deleteVehicle)
+);
+
 module.exports = router;
