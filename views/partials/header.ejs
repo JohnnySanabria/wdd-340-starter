@@ -3,6 +3,16 @@
     <a href="/" title="Return to home page">New Motors</a>
   </span>
   <div id="tools">
-    <a href="/account/login" title="Click to log in">My Account</a>
+    <% if (!locals.loggedin) { %>
+    <a href="/account/login" title="Click to log in"
+      >My Account</a
+    >
+
+    <% } else { %>
+    <a href="/account" title="View your account"
+      >My Account</a
+    >
+    <a href="/account/logout" title="Log out">Logout</a>
+    <% } %>
   </div>
 </header>
