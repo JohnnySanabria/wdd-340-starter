@@ -181,7 +181,6 @@ Util.checkJWT = (req, res, next) => {
  *  Used in routes that require employee or admin access
  **************************************** */
 Util.checkEmployeeOrAdmin = (req, res, next) => {
-  console.log(res.locals.accountData);
   if (
     res.locals.accountData &&
     (res.locals.accountData.account_type === "Employee" ||
