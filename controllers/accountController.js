@@ -244,6 +244,57 @@ async function updateAccount(req, res) {
   }
 }
 
+/* ****************************************
+ *  Process update password request
+ * *************************************** */
+async function updateAccountPassword(req, res) {
+  const { new_account_password } = req.body;
+  const account_id = parseInt(req.body.account_id);
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hashSync(
+      new_account_password,
+      10
+    );
+  } catch (error) {
+    req.flash(
+      "notice",
+      "Sorry, there was an error processing the password update."
+    );
+    return res.status(500).render("account/update", {
+      title: "Update Account",
+      nav: await utilities.getNav(),
+      errors: null,
+      account_id,
+    });
+  }
+  const updateResult =
+    await accountModel.updateAccountPassword(
+      account_id,
+      hashedPassword
+    );
+  if (updateResult) {
+    req.flash("notice", "Your password has been updated.");
+    return res.status(200).render("account/management", {
+      title: "Account",
+      nav: await utilities.getNav(),
+      errors: null,
+      account_id,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, your password could not be updated."
+    );
+    return res.status(501).render("account/update", {
+      title: "Update Account",
+      nav: await utilities.getNav(),
+      errors: null,
+      account_id,
+    });
+  }
+}
+
 module.exports = {
   buildLogin,
   buildRegister,
@@ -253,4 +304,5 @@ module.exports = {
   accountLogout,
   buildUpdate,
   updateAccount,
+  updateAccountPassword,
 };

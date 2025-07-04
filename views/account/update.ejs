@@ -45,22 +45,22 @@
 <hr />
 <form action="/account/update/password" method="post">
   <h3>Update Password</h3>
-  <label for="account_password">New Password:</label>
+  <label for="new_account_password">New Password:</label>
   <input
     type="password"
-    id="account_password"
-    name="account_password"
+    id="new_account_password"
+    name="new_account_password"
     pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
     placeholder="New Password"
     required />
 
-  <label for="account_password_confirm">
+  <label for="new_account_password_confirm">
     Confirm New Password:
   </label>
   <input
     type="password"
-    id="account_password_confirm"
-    name="account_password_confirm"
+    id="new_account_password_confirm"
+    name="new_account_password_confirm"
     pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
     placeholder="Confirm New Password"
     required />

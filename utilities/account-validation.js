@@ -189,4 +189,67 @@ validate.checkUpdateData = async (req, res, next) => {
   next();
 };
 
+/*  **********************************
+ *  Update Password Validation Rules
+ * ********************************* */
+validate.updatePasswordRules = () => {
+  return [
+    // password is required and must be strong password
+    body("new_account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+    body("new_account_password_confirm")
+      .trim()
+      .notEmpty()
+      .custom((value, { req }) => {
+        if (value !== req.body.new_account_password) {
+          throw new Error("Passwords do not match.");
+        }
+        return true;
+      })
+      .withMessage("Passwords do not match."),
+  ];
+};
+
+/* ******************************
+ * Check data and return errors or continue to update password
+ * ***************************** */
+validate.checkUpdatePasswordData = async (
+  req,
+  res,
+  next
+) => {
+  const {
+    new_account_password,
+    new_account_password_confirm,
+  } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    let account_data = await accountModel.getAccountById(
+      req.body.account_id
+    );
+    res.render("account/update", {
+      errors,
+      title: "Update Account",
+      nav,
+      account_firstname: account_data.account_firstname,
+      account_lastname: account_data.account_lastname,
+      account_email: account_data.account_email,
+      account_id: req.body.account_id,
+    });
+    return;
+  }
+  next();
+};
+
 module.exports = validate;
