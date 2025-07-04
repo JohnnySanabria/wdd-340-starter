@@ -76,9 +76,6 @@ async function updateAccount(
   account_lastname,
   account_email
 ) {
-  console.log(
-    `Updating account with ID: ${account_id}, First Name: ${account_firstname}, Last Name: ${account_lastname}, Email: ${account_email}`
-  );
   try {
     const sql =
       "UPDATE public.account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4";
