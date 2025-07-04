@@ -175,6 +175,30 @@ async function accountLogout(req, res) {
   return res.redirect("/account/login");
 }
 
+/* ****************************************
+ *  Deliver update account view
+ * *************************************** */
+async function buildUpdate(req, res, next) {
+  const id = parseInt(req.params.account_id);
+  const userData = await accountModel.getAccountById(id);
+  if (!userData) {
+    req.flash(
+      "notice",
+      "Sorry, that account does not exist."
+    );
+    return res.redirect("/account/");
+  }
+  let nav = await utilities.getNav();
+  res.render("account/update", {
+    title: "Update Account",
+    nav,
+    account_firstname: userData.account_firstname,
+    account_lastname: userData.account_lastname,
+    account_email: userData.account_email,
+    account_id: 1,
+    errors: null,
+  });
+}
 module.exports = {
   buildLogin,
   buildRegister,
@@ -182,4 +206,5 @@ module.exports = {
   buildManagement,
   accountLogin,
   accountLogout,
+  buildUpdate,
 };
