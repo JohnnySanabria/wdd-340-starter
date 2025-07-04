@@ -172,7 +172,7 @@ async function accountLogout(req, res) {
   res.locals.accountData = null;
   res.locals.loggedin = 0;
   req.flash("notice", "You have been logged out.");
-  return res.redirect("/account/login");
+  return res.redirect("/");
 }
 
 /* ****************************************
