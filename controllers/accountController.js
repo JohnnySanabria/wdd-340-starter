@@ -199,6 +199,51 @@ async function buildUpdate(req, res, next) {
     errors: null,
   });
 }
+/* ****************************************
+ *  Process update account request
+ * *************************************** */
+async function updateAccount(req, res) {
+  const {
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_id,
+  } = req.body;
+  const updateResult = await accountModel.updateAccount(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email
+  );
+  const nav = await utilities.getNav();
+  if (updateResult) {
+    req.flash("notice", "Your account has been updated.");
+    return res.status(200).render("account/management", {
+      title: "Account",
+      nav: nav,
+      errors: null,
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, your account could not be updated."
+    );
+    return res.status(501).render("account/update", {
+      title: "Update Account",
+      nav: nav,
+      errors: null,
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id,
+    });
+  }
+}
+
 module.exports = {
   buildLogin,
   buildRegister,
@@ -207,4 +252,5 @@ module.exports = {
   accountLogin,
   accountLogout,
   buildUpdate,
+  updateAccount,
 };

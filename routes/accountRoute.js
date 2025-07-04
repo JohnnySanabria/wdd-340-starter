@@ -34,12 +34,12 @@ router.get(
   utilities.checkLogin,
   accountController.buildUpdate
 );
-// router.post(
-//   "/update",
-//   accValidate.updateRules(),
-//   accValidate.checkUpdateData,
-//   utilities.handleErrors(accountController.updateAccount)
-// );
+router.post(
+  "/update",
+  accValidate.updateRules(),
+  accValidate.checkUpdateData,
+  utilities.handleErrors(accountController.updateAccount)
+);
 // router.post(
 //   "/update/password",
 //   accValidate.updatePasswordRules(),

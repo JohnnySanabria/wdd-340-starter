@@ -1,4 +1,16 @@
-<% if (locals.loggedin && locals.accountData) { %>
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<!-- Login Form -->
+<% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %> <% if (error.msg
+  != 'Invalid value') { %>
+
+  <li><%= error.msg %></li>
+  <% }}) %>
+</ul>
+<% } %> <% if (locals.loggedin && locals.accountData) { %>
 <h2>Welcome <%= locals.accountData.account_firstname %></h2>
 <a
   href="/account/update/<%= locals.accountData.account_id %>"

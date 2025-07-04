@@ -67,9 +67,36 @@ async function getAccountById(account_id) {
   }
 }
 
+// /* *****************************
+//  * Update account data
+//  * *************************** */
+async function updateAccount(
+  account_id,
+  account_firstname,
+  account_lastname,
+  account_email
+) {
+  console.log(
+    `Updating account with ID: ${account_id}, First Name: ${account_firstname}, Last Name: ${account_lastname}, Email: ${account_email}`
+  );
+  try {
+    const sql =
+      "UPDATE public.account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4";
+    return await pool.query(sql, [
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id,
+    ]);
+  } catch (error) {
+    return error.message;
+  }
+}
+
 module.exports = {
   registerAccount,
   checkExistingEmail,
   getAccountByEmail,
   getAccountById,
+  updateAccount,
 };
