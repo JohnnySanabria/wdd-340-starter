@@ -9,11 +9,14 @@ const Util = {};
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
 
-  let list = "<ul>";
-  list += '<li><a href="/" title="Home page">Home</a></li>';
+  let nav = '<div class="nav-container">';
+  nav +=
+    '<button class="nav-toggle" aria-label="Toggle navigation">☰</button>';
+  nav += '<ul class="nav-menu">';
+  nav += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
-    list += "<li>";
-    list +=
+    nav += "<li>";
+    nav +=
       '<a href="/inv/type/' +
       row.classification_id +
       '" title="See our inventory of ' +
@@ -21,10 +24,11 @@ Util.getNav = async function (req, res, next) {
       ' vehicles">' +
       row.classification_name +
       "</a>";
-    list += "</li>";
+    nav += "</li>";
   });
-  list += "</ul>";
-  return list;
+  nav += "</ul>";
+  nav += "</div>";
+  return nav;
 };
 
 /* **************************************
