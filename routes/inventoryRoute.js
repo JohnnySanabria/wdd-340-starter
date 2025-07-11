@@ -72,5 +72,10 @@ router.post(
   utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.deleteVehicle)
 );
+router.get(
+  "/approval-list",
+  utilities.checkAdmin,
+  invController.buildApprovalList
+);
 
 module.exports = router;

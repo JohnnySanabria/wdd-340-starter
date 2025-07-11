@@ -8,7 +8,6 @@ const Util = {};
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassificationsForNav();
-  console.log(data);
 
   let nav = '<div class="nav-container">';
   nav +=
@@ -196,6 +195,25 @@ Util.checkEmployeeOrAdmin = (req, res, next) => {
     res.locals.accountData &&
     (res.locals.accountData.account_type === "Employee" ||
       res.locals.accountData.account_type === "Admin")
+  ) {
+    next();
+  } else {
+    req.flash(
+      "notice",
+      "You do not have permission to access that resource."
+    );
+    return res.redirect("/account/login");
+  }
+};
+
+/* ****************************************
+ *  Middleware to enforce admin access
+ *  Used in routes that require admin access
+ **************************************** */
+Util.checkAdmin = (req, res, next) => {
+  if (
+    res.locals.accountData &&
+    res.locals.accountData.account_type === "Admin"
   ) {
     next();
   } else {

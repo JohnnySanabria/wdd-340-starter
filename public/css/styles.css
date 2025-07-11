@@ -304,6 +304,29 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.approval-form {
+  background-color: white;
+}
+
+.approval-button {
+  background-color: green;
+}
+
+.reject-button {
+  background-color: darkred;
+}
+
+.approval-table {
+  max-width: 80%;
+
+}
+
+.approval-table td {
+  text-align: center;
+  font-size: 1.2em;
+  padding: 5px;
+}
+
 
 @media screen and (max-width: 600px) {
   .details-container {

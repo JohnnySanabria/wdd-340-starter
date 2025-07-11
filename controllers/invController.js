@@ -386,7 +386,7 @@ invCont.deleteVehicle = async function (req, res, next) {
   } = req.body;
 
   const result = await invModel.deleteVehicle(inv_id);
-  console.log(result);
+  
   const nav = await utilities.getNav();
   const classificationOptions =
     await utilities.buildClassificationOptions();
@@ -420,6 +420,31 @@ invCont.deleteVehicle = async function (req, res, next) {
       errors: null,
     });
   }
+};
+
+/* ***************************
+ *  Build approval list view
+ * ************************** */
+invCont.buildApprovalList = async function (
+  req,
+  res,
+  next
+) {
+  const nav = await utilities.getNav();
+
+  const unapprovedClassifications =
+    await invModel.getUnapprovedClassifications();
+  const unapprovedInventory =
+    await invModel.getUnapprovedInventory();
+
+  res.render("./inventory/approval-list", {
+    title: "Approval List",
+    nav,
+    unapprovedClassifications:
+      unapprovedClassifications.rows,
+    unapprovedInventory: unapprovedInventory.rows,
+    errors: null,
+  });
 };
 
 module.exports = invCont;

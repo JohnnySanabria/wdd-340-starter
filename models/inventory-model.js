@@ -210,6 +210,26 @@ async function deleteVehicle(inv_id) {
   }
 }
 
+async function getUnapprovedClassifications() {
+  try {
+    const sql = `SELECT * FROM public.classification WHERE classification_approved = false`;
+    return await pool.query(sql);
+  } catch (error) {
+    console.error(
+      "getUnapprovedClassifications error " + error
+    );
+  }
+}
+
+async function getUnapprovedInventory() {
+  try {
+    const sql = `SELECT * FROM public.inventory WHERE inv_approved = false`;
+    return await pool.query(sql);
+  } catch (error) {
+    console.error("getUnapprovedInventory error " + error);
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
@@ -220,4 +240,6 @@ module.exports = {
   deleteVehicle,
   getClassificationsForNav,
   getApprovedInventoryByClassificationId,
+  getUnapprovedClassifications,
+  getUnapprovedInventory,
 };
