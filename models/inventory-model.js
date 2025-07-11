@@ -254,24 +254,14 @@ async function approveInventory(inv_id, account_id) {
 }
 
 async function rejectClassification(classification_id) {
-  // Delete the classification and all associated inventory items
   try {
-    await pool.query("BEGIN");
-    await pool.query(
-      `DELETE FROM public.inventory WHERE classification_id = $1 RETURNING *`,
-      [classification_id]
-    );
     const result = await pool.query(
       `DELETE FROM public.classification WHERE classification_id = $1 RETURNING *`,
       [classification_id]
     );
-    await pool.query("COMMIT");
     return result;
   } catch (error) {
-    await pool.query("ROLLBACK");
     console.error("rejectClassification error " + error);
-  } finally {
-    pool.release();
   }
 }
 

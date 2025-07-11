@@ -14,101 +14,106 @@
 <h3>Unapproved Classifications</h3>
 <% if (unapprovedClassifications &&
 unapprovedClassifications.length) { %>
-<table class="approval-table">
-  <tr>
-    <th>Classification Name</th>
-    <th colspan="2">Actions</th>
-  </tr>
-  <% unapprovedClassifications.forEach(classification => {
-  %>
-  <tr>
-    <td><%= classification.classification_name %></td>
-    <td>
-      <form
-        class="approval-form"
-        action="/inv/approve-classification/<%= classification.classification_id %>"
-        method="post">
-        <button class="approval-button" type="submit">
-          Approve
-        </button>
-        <input
-          type="hidden"
-          name="account_id"
-          value="<%= locals.accountData.account_id %>" />
-      </form>
-    </td>
-    <td>
-      <form
-        class="approval-form"
-        action="/inv/reject-classification/<%= classification.classification_id %>"
-        method="post">
-        <button type="submit" class="reject-button">
-          Reject
-        </button>
-      </form>
-    </td>
-  </tr>
-  <% }) %>
-</table>
+<div style="overflow-x:auto;">
+  <table class="approval-table">
+    <tr>
+      <th>Classification Name</th>
+      <th colspan="2">Actions</th>
+    </tr>
+    <% unapprovedClassifications.forEach(classification => {
+    %>
+    <tr>
+      <td><%= classification.classification_name %></td>
+      <td>
+        <form
+          class="approval-form"
+          action="/inv/approve-classification/<%= classification.classification_id %>"
+          method="post">
+          <button class="approval-button" type="submit">
+            Approve
+          </button>
+          <input
+            type="hidden"
+            name="account_id"
+            value="<%= locals.accountData.account_id %>" />
+        </form>
+      </td>
+      <td>
+        <form
+          class="approval-form"
+          action="/inv/reject-classification/<%= classification.classification_id %>"
+          method="post">
+          <button type="submit" class="reject-button">
+            Reject
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+</div>
 <% } else { %>
 <p>No unapproved classifications found.</p>
 <% } %>
 <h3>Unapproved Inventory Items</h3>
 <% if (unapprovedInventory && unapprovedInventory.length) {
 %>
-<table class="approval-table">
-  <tr>
-    <th>Make</th>
-    <th>Model</th>
-    <th>Year</th>
-    <th>Color</th>
-    <th>Price</th>
-    <th>Miles</th>
-    <th>Description</th>
-    <th>Image</th>
-    <th colspan="2">Actions</th>
-  </tr>
-  <% unapprovedInventory.forEach(item => { %>
-  <tr>
-    <td><%= item.inv_make %></td>
-    <td><%= item.inv_model %></td>
-    <td><%= item.inv_year %></td>
-    <td><%= item.inv_color %></td>
-    <td><%= item.inv_price %></td>
-    <td><%= item.inv_miles %></td>
-    <td><%= item.inv_description %></td>
-    <td>
-      <img
-        src="<%= item.inv_thumbnail %>"
-        alt="<%= item.inv_description %>" />
-    </td>
-    <td>
-      <form
-        class="approval-form"
-        action="/inv/approve-inventory/<%= item.inv_id %>"
-        method="post">
-        <button class="approval-button" type="submit">
-          Approve
-        </button>
-        <input
-          type="hidden"
-          name="account_id"
-          value="<%= locals.accountData.account_id %>" />
-      </form>
-    </td>
-    <td>
-      <form
-        class="approval-form"
-        action="/inv/reject-inventory/<%= item.inv_id %>"
-        method="post">
-        <button type="submit" class="reject-button">
-          Reject
-        </button>
-      </form>
-    </td>
-  </tr>
-  <% }) %>
-</table>
+<div style="overflow-x:auto;">
+  <table class="approval-table">
+    <tr>
+      <th>Make</th>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Color</th>
+      <th>Price</th>
+      <th>Miles</th>
+      <th>Description</th>
+      <th>Image</th>
+      <th colspan="2">Actions</th>
+    </tr>
+    <% unapprovedInventory.forEach(item => { %>
+    <tr>
+      <td><%= item.inv_make %></td>
+      <td><%= item.inv_model %></td>
+      <td><%= item.inv_year %></td>
+      <td><%= item.inv_color %></td>
+      <td><%= item.inv_price %></td>
+      <td><%= item.inv_miles %></td>
+      <td><%= item.inv_description %></td>
+      <td>
+        <img
+          src="<%= item.inv_thumbnail %>"
+          alt="<%= item.inv_description %>" />
+      </td>
+
+      <td>
+        <form
+          class="approval-form"
+          action="/inv/approve-inventory/<%= item.inv_id %>"
+          method="post">
+          <button class="approval-button" type="submit">
+            Approve
+          </button>
+          <input
+            type="hidden"
+            name="account_id"
+            value="<%= locals.accountData.account_id %>" />
+        </form>
+      </td>
+      <td>
+        <form
+          class="approval-form"
+          action="/inv/reject-inventory/<%= item.inv_id %>"
+          method="post">
+          <button type="submit" class="reject-button">
+            Reject
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+</div>
 <% } else { %>
 <p>No unapproved inventory items found.</p>
 <% } %>
