@@ -10,6 +10,21 @@ async function getClassifications() {
 }
 
 /* ***************************
+ *  Get classifications for nav
+ * ************************** */
+async function getClassificationsForNav() {
+  return await pool.query(
+    `SELECT c.classification_id, c.classification_name, c.classification_approved, c.account_id, c.classification_approval_date, COUNT(i.inv_id) AS inventory_count
+      FROM public.classification c
+      JOIN public.inventory i
+        ON i.classification_id = c.classification_id
+      WHERE c.classification_approved = true AND i.inv_approved = true
+      GROUP BY c.classification_id
+      HAVING COUNT(i.inv_id) > 1
+      ORDER BY c.classification_id;`
+  );
+}
+/* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
 async function getInventoryByClassificationId(
@@ -21,6 +36,26 @@ async function getInventoryByClassificationId(
         JOIN public.classification AS c 
         ON i.classification_id = c.classification_id 
         WHERE i.classification_id = $1`,
+      [classification_id]
+    );
+    return data.rows;
+  } catch (error) {
+    console.error("getclassificationsbyid error " + error);
+  }
+}
+
+/* ***************************
+ *  Get approved inventory items and classification_name by classification_id
+ * ************************** */
+async function getApprovedInventoryByClassificationId(
+  classification_id
+) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+        JOIN public.classification AS c 
+        ON i.classification_id = c.classification_id 
+        WHERE i.classification_id = $1 AND i.inv_approved = true`,
       [classification_id]
     );
     return data.rows;
@@ -183,4 +218,6 @@ module.exports = {
   addClassification,
   updateVehicle,
   deleteVehicle,
+  getClassificationsForNav,
+  getApprovedInventoryByClassificationId,
 };

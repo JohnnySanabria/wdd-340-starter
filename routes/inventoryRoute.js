@@ -15,7 +15,11 @@ router.get(
   invController.buildByInventoryId
 );
 
-router.get("/", utilities.checkEmployeeOrAdmin, invController.buildInventoryManagement);
+router.get(
+  "/",
+  utilities.checkEmployeeOrAdmin,
+  invController.buildInventoryManagement
+);
 router.get(
   "/add-classification",
   utilities.checkEmployeeOrAdmin,
@@ -28,7 +32,11 @@ router.post(
   invValidate.checkClassificationData,
   invController.addClassification
 );
-router.get("/add-vehicle", utilities.checkEmployeeOrAdmin, invController.buildAddVehicle);
+router.get(
+  "/add-vehicle",
+  utilities.checkEmployeeOrAdmin,
+  invController.buildAddVehicle
+);
 router.post(
   "/add-vehicle",
   utilities.checkEmployeeOrAdmin,

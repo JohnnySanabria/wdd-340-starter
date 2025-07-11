@@ -7,25 +7,29 @@ const Util = {};
  * Constructs the nav HTML unordered list
  ************************** */
 Util.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications();
+  let data = await invModel.getClassificationsForNav();
+  console.log(data);
 
   let nav = '<div class="nav-container">';
   nav +=
     '<button class="nav-toggle" aria-label="Toggle navigation">☰</button>';
   nav += '<ul class="nav-menu">';
   nav += '<li><a href="/" title="Home page">Home</a></li>';
-  data.rows.forEach((row) => {
-    nav += "<li>";
-    nav +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>";
-    nav += "</li>";
-  });
+  if (data.rows && data.rows.length > 0) {
+    data.rows.forEach((row) => {
+      nav += "<li>";
+      nav +=
+        '<a href="/inv/type/' +
+        row.classification_id +
+        '" title="See our inventory of ' +
+        row.classification_name +
+        ' vehicles">' +
+        row.classification_name +
+        "</a>";
+      nav += "</li>";
+    });
+  }
+
   nav += "</ul>";
   nav += "</div>";
   return nav;
@@ -35,10 +39,13 @@ Util.getNav = async function (req, res, next) {
  * Build the classification view HTML
  * ************************************ */
 Util.buildClassificationGrid = async function (data) {
+  let filteredData = data.filter(
+    (vehicle) => vehicle.inv_approved === 1
+  );
   let grid;
-  if (data.length > 0) {
+  if (filteredData.length > 0) {
     grid = '<ul id="inv-display">';
-    data.forEach((vehicle) => {
+    filteredData.forEach((vehicle) => {
       grid += "<li>";
       grid +=
         '<a href="../../inv/detail/' +

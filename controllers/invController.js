@@ -13,7 +13,7 @@ invCont.buildByClassificationId = async function (
 ) {
   const classification_id = req.params.classificationId;
   const data =
-    await invModel.getInventoryByClassificationId(
+    await invModel.getApprovedInventoryByClassificationId(
       classification_id
     );
   const grid = await utilities.buildClassificationGrid(
