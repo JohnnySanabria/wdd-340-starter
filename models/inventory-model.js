@@ -20,7 +20,7 @@ async function getClassificationsForNav() {
         ON i.classification_id = c.classification_id
       WHERE c.classification_approved = true AND i.inv_approved = true
       GROUP BY c.classification_id
-      HAVING COUNT(i.inv_id) > 1
+      HAVING COUNT(i.inv_id) > 0
       ORDER BY c.classification_id;`
   );
 }

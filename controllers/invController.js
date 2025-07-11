@@ -16,7 +16,7 @@ invCont.buildByClassificationId = async function (
     await invModel.getApprovedInventoryByClassificationId(
       classification_id
     );
-  console.log(data);
+
   const grid = await utilities.buildClassificationGrid(
     data
   );
