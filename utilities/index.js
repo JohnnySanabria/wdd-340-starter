@@ -7,25 +7,28 @@ const Util = {};
  * Constructs the nav HTML unordered list
  ************************** */
 Util.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications();
+  let data = await invModel.getClassificationsForNav();
 
   let nav = '<div class="nav-container">';
   nav +=
     '<button class="nav-toggle" aria-label="Toggle navigation">☰</button>';
   nav += '<ul class="nav-menu">';
   nav += '<li><a href="/" title="Home page">Home</a></li>';
-  data.rows.forEach((row) => {
-    nav += "<li>";
-    nav +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>";
-    nav += "</li>";
-  });
+  if (data.rows && data.rows.length > 0) {
+    data.rows.forEach((row) => {
+      nav += "<li>";
+      nav +=
+        '<a href="/inv/type/' +
+        row.classification_id +
+        '" title="See our inventory of ' +
+        row.classification_name +
+        ' vehicles">' +
+        row.classification_name +
+        "</a>";
+      nav += "</li>";
+    });
+  }
+
   nav += "</ul>";
   nav += "</div>";
   return nav;
@@ -127,7 +130,10 @@ Util.buildClassificationOptions = async function () {
   return await invModel
     .getClassifications()
     .then((data) => {
-      return data.rows
+      data = data.rows.filter(
+        (row) => row.classification_approved === true
+      );
+      return data
         .map(
           (row) =>
             `<option value="${row.classification_id}">${row.classification_name}</option>`
@@ -189,6 +195,25 @@ Util.checkEmployeeOrAdmin = (req, res, next) => {
     res.locals.accountData &&
     (res.locals.accountData.account_type === "Employee" ||
       res.locals.accountData.account_type === "Admin")
+  ) {
+    next();
+  } else {
+    req.flash(
+      "notice",
+      "You do not have permission to access that resource."
+    );
+    return res.redirect("/account/login");
+  }
+};
+
+/* ****************************************
+ *  Middleware to enforce admin access
+ *  Used in routes that require admin access
+ **************************************** */
+Util.checkAdmin = (req, res, next) => {
+  if (
+    res.locals.accountData &&
+    res.locals.accountData.account_type === "Admin"
   ) {
     next();
   } else {

@@ -15,7 +15,11 @@ router.get(
   invController.buildByInventoryId
 );
 
-router.get("/", utilities.checkEmployeeOrAdmin, invController.buildInventoryManagement);
+router.get(
+  "/",
+  utilities.checkEmployeeOrAdmin,
+  invController.buildInventoryManagement
+);
 router.get(
   "/add-classification",
   utilities.checkEmployeeOrAdmin,
@@ -28,7 +32,11 @@ router.post(
   invValidate.checkClassificationData,
   invController.addClassification
 );
-router.get("/add-vehicle", utilities.checkEmployeeOrAdmin, invController.buildAddVehicle);
+router.get(
+  "/add-vehicle",
+  utilities.checkEmployeeOrAdmin,
+  invController.buildAddVehicle
+);
 router.post(
   "/add-vehicle",
   utilities.checkEmployeeOrAdmin,
@@ -63,6 +71,31 @@ router.post(
   "/delete/",
   utilities.checkEmployeeOrAdmin,
   utilities.handleErrors(invController.deleteVehicle)
+);
+router.get(
+  "/approval-list",
+  utilities.checkAdmin,
+  invController.buildApprovalList
+);
+router.post(
+  "/approve-classification/:classificationId",
+  utilities.checkAdmin,
+  invController.approveClassification
+);
+router.post(
+  "/approve-inventory/:inventoryId",
+  utilities.checkAdmin,
+  invController.approveInventory
+);
+router.post(
+  "/reject-classification/:classificationId",
+  utilities.checkAdmin,
+  invController.rejectClassification
+);
+router.post(
+  "/reject-inventory/:inventoryId",
+  utilities.checkAdmin,
+  invController.rejectInventory
 );
 
 module.exports = router;

@@ -13,9 +13,10 @@ invCont.buildByClassificationId = async function (
 ) {
   const classification_id = req.params.classificationId;
   const data =
-    await invModel.getInventoryByClassificationId(
+    await invModel.getApprovedInventoryByClassificationId(
       classification_id
     );
+  console.log(data);
   const grid = await utilities.buildClassificationGrid(
     data
   );
@@ -386,7 +387,7 @@ invCont.deleteVehicle = async function (req, res, next) {
   } = req.body;
 
   const result = await invModel.deleteVehicle(inv_id);
-  console.log(result);
+
   const nav = await utilities.getNav();
   const classificationOptions =
     await utilities.buildClassificationOptions();
@@ -417,6 +418,231 @@ invCont.deleteVehicle = async function (req, res, next) {
       inv_model,
       inv_year,
       inv_price,
+      errors: null,
+    });
+  }
+};
+
+/* ***************************
+ *  Build approval list view
+ * ************************** */
+invCont.buildApprovalList = async function (
+  req,
+  res,
+  next
+) {
+  const nav = await utilities.getNav();
+
+  const unapprovedClassifications =
+    await invModel.getUnapprovedClassifications();
+  const unapprovedInventory =
+    await invModel.getUnapprovedInventory();
+
+  res.render("./inventory/approval-list", {
+    title: "Approval List",
+    nav,
+    unapprovedClassifications:
+      unapprovedClassifications.rows,
+    unapprovedInventory: unapprovedInventory.rows,
+    errors: null,
+  });
+};
+
+/* ***************************
+ *  Approve Classification
+ * ************************** */
+invCont.approveClassification = async function (
+  req,
+  res,
+  next
+) {
+  const classificationId = req.params.classificationId;
+  const account_id = req.body.account_id;
+
+  const result = await invModel.approveClassification(
+    classificationId,
+    account_id
+  );
+
+  const nav = await utilities.getNav();
+
+  const unapprovedClassifications =
+    await invModel.getUnapprovedClassifications();
+  const unapprovedInventory =
+    await invModel.getUnapprovedInventory();
+
+  if (result) {
+    req.flash(
+      "notice",
+      `Classification was successfully approved.`
+    );
+    res.status(201).render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, there was an error approving the classification."
+    );
+
+    res.render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  }
+};
+
+/* ***************************
+ *  Approve Inventory
+ * ************************** */
+invCont.approveInventory = async function (req, res, next) {
+  const inventoryId = req.params.inventoryId;
+  const account_id = req.body.account_id;
+
+  const result = await invModel.approveInventory(
+    inventoryId,
+    account_id
+  );
+
+  const nav = await utilities.getNav();
+
+  const unapprovedClassifications =
+    await invModel.getUnapprovedClassifications();
+  const unapprovedInventory =
+    await invModel.getUnapprovedInventory();
+
+  if (result) {
+    req.flash(
+      "notice",
+      `Inventory Item was successfully approved.`
+    );
+    res.status(201).render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, there was an error approving the Inventory Item."
+    );
+
+    res.render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  }
+};
+
+/* ***************************
+ *  Reject Classification
+ * ************************** */
+invCont.rejectClassification = async function (
+  req,
+  res,
+  next
+) {
+  const classificationId = req.params.classificationId;
+
+  const result = await invModel.rejectClassification(
+    classificationId
+  );
+
+  const nav = await utilities.getNav();
+
+  const unapprovedClassifications =
+    await invModel.getUnapprovedClassifications();
+  const unapprovedInventory =
+    await invModel.getUnapprovedInventory();
+
+  if (result) {
+    req.flash(
+      "notice",
+      `Classification was successfully rejected.`
+    );
+    res.status(201).render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, there was an error rejecting the classification."
+    );
+
+    res.render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  }
+};
+
+/* ***************************
+ *  Reject Inventory
+ * ************************** */
+invCont.rejectInventory = async function (req, res, next) {
+  const inventoryId = req.params.inventoryId;
+
+  const result = await invModel.rejectInventory(
+    inventoryId
+  );
+
+  const nav = await utilities.getNav();
+
+  const unapprovedClassifications =
+    await invModel.getUnapprovedClassifications();
+  const unapprovedInventory =
+    await invModel.getUnapprovedInventory();
+
+  if (result) {
+    req.flash(
+      "notice",
+      `Inventory Item was successfully rejected.`
+    );
+    res.status(201).render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
+      errors: null,
+    });
+  } else {
+    req.flash(
+      "notice",
+      "Sorry, there was an error rejecting the Inventory Item."
+    );
+
+    res.render("./inventory/approval-list", {
+      title: "Approval List",
+      nav,
+      unapprovedClassifications:
+        unapprovedClassifications.rows,
+      unapprovedInventory: unapprovedInventory.rows,
       errors: null,
     });
   }

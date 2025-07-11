@@ -10,6 +10,21 @@ async function getClassifications() {
 }
 
 /* ***************************
+ *  Get classifications for nav
+ * ************************** */
+async function getClassificationsForNav() {
+  return await pool.query(
+    `SELECT c.classification_id, c.classification_name, c.classification_approved, c.account_id, c.classification_approval_date, COUNT(i.inv_id) AS inventory_count
+      FROM public.classification c
+      JOIN public.inventory i
+        ON i.classification_id = c.classification_id
+      WHERE c.classification_approved = true AND i.inv_approved = true
+      GROUP BY c.classification_id
+      HAVING COUNT(i.inv_id) > 1
+      ORDER BY c.classification_id;`
+  );
+}
+/* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
 async function getInventoryByClassificationId(
@@ -21,6 +36,26 @@ async function getInventoryByClassificationId(
         JOIN public.classification AS c 
         ON i.classification_id = c.classification_id 
         WHERE i.classification_id = $1`,
+      [classification_id]
+    );
+    return data.rows;
+  } catch (error) {
+    console.error("getclassificationsbyid error " + error);
+  }
+}
+
+/* ***************************
+ *  Get approved inventory items and classification_name by classification_id
+ * ************************** */
+async function getApprovedInventoryByClassificationId(
+  classification_id
+) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory AS i 
+        JOIN public.classification AS c 
+        ON i.classification_id = c.classification_id 
+        WHERE i.classification_id = $1 AND i.inv_approved = true`,
       [classification_id]
     );
     return data.rows;
@@ -175,6 +210,81 @@ async function deleteVehicle(inv_id) {
   }
 }
 
+async function getUnapprovedClassifications() {
+  try {
+    const sql = `SELECT * FROM public.classification WHERE classification_approved = false`;
+    return await pool.query(sql);
+  } catch (error) {
+    console.error(
+      "getUnapprovedClassifications error " + error
+    );
+  }
+}
+
+async function getUnapprovedInventory() {
+  try {
+    const sql = `SELECT * FROM public.inventory WHERE inv_approved = false`;
+    return await pool.query(sql);
+  } catch (error) {
+    console.error("getUnapprovedInventory error " + error);
+  }
+}
+
+async function approveClassification(
+  classification_id,
+  account_id
+) {
+  try {
+    const sql = `UPDATE public.classification SET classification_approved = true, account_id = $2, classification_approval_date = NOW() WHERE classification_id = $1 RETURNING *`;
+    return await pool.query(sql, [
+      classification_id,
+      account_id,
+    ]);
+  } catch (error) {
+    console.error("approveClassification error " + error);
+  }
+}
+async function approveInventory(inv_id, account_id) {
+  try {
+    const sql = `UPDATE public.inventory SET inv_approved = true, account_id = $2, inv_approved_date = NOW() WHERE inv_id = $1 RETURNING *`;
+    return await pool.query(sql, [inv_id, account_id]);
+  } catch (error) {
+    console.error("approveInventory error " + error);
+  }
+}
+
+async function rejectClassification(classification_id) {
+  // Delete the classification and all associated inventory items
+  try {
+    await pool.query("BEGIN");
+    await pool.query(
+      `DELETE FROM public.inventory WHERE classification_id = $1 RETURNING *`,
+      [classification_id]
+    );
+    const result = await pool.query(
+      `DELETE FROM public.classification WHERE classification_id = $1 RETURNING *`,
+      [classification_id]
+    );
+    await pool.query("COMMIT");
+    return result;
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("rejectClassification error " + error);
+  } finally {
+    pool.release();
+  }
+}
+
+async function rejectInventory(inv_id) {
+  // Delete the inventory item
+  try {
+    const sql = `DELETE FROM public.inventory WHERE inv_id = $1 RETURNING *`;
+    return await pool.query(sql, [inv_id]);
+  } catch (error) {
+    console.error("rejectInventory error " + error);
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
@@ -183,4 +293,12 @@ module.exports = {
   addClassification,
   updateVehicle,
   deleteVehicle,
+  getClassificationsForNav,
+  getApprovedInventoryByClassificationId,
+  getUnapprovedClassifications,
+  getUnapprovedInventory,
+  approveClassification,
+  approveInventory,
+  rejectClassification,
+  rejectInventory,
 };

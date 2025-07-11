@@ -110,6 +110,9 @@
       "classification_id"
     );
     if (savedValue) select.value = savedValue;
+    else {
+      select.value = "";
+    }
   });
 
   select.addEventListener("change", () => {
