@@ -38,13 +38,10 @@ Util.getNav = async function (req, res, next) {
  * Build the classification view HTML
  * ************************************ */
 Util.buildClassificationGrid = async function (data) {
-  let filteredData = data.filter(
-    (vehicle) => vehicle.inv_approved === 1
-  );
   let grid;
-  if (filteredData.length > 0) {
+  if (data.length > 0) {
     grid = '<ul id="inv-display">';
-    filteredData.forEach((vehicle) => {
+    data.forEach((vehicle) => {
       grid += "<li>";
       grid +=
         '<a href="../../inv/detail/' +
@@ -133,7 +130,10 @@ Util.buildClassificationOptions = async function () {
   return await invModel
     .getClassifications()
     .then((data) => {
-      return data.rows
+      data = data.rows.filter(
+        (row) => row.classification_approved === true
+      );
+      return data
         .map(
           (row) =>
             `<option value="${row.classification_id}">${row.classification_name}</option>`

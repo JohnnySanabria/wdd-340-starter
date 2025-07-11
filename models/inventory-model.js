@@ -230,6 +230,61 @@ async function getUnapprovedInventory() {
   }
 }
 
+async function approveClassification(
+  classification_id,
+  account_id
+) {
+  try {
+    const sql = `UPDATE public.classification SET classification_approved = true, account_id = $2, classification_approval_date = NOW() WHERE classification_id = $1 RETURNING *`;
+    return await pool.query(sql, [
+      classification_id,
+      account_id,
+    ]);
+  } catch (error) {
+    console.error("approveClassification error " + error);
+  }
+}
+async function approveInventory(inv_id, account_id) {
+  try {
+    const sql = `UPDATE public.inventory SET inv_approved = true, account_id = $2, inv_approved_date = NOW() WHERE inv_id = $1 RETURNING *`;
+    return await pool.query(sql, [inv_id, account_id]);
+  } catch (error) {
+    console.error("approveInventory error " + error);
+  }
+}
+
+async function rejectClassification(classification_id) {
+  // Delete the classification and all associated inventory items
+  try {
+    await pool.query("BEGIN");
+    await pool.query(
+      `DELETE FROM public.inventory WHERE classification_id = $1 RETURNING *`,
+      [classification_id]
+    );
+    const result = await pool.query(
+      `DELETE FROM public.classification WHERE classification_id = $1 RETURNING *`,
+      [classification_id]
+    );
+    await pool.query("COMMIT");
+    return result;
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("rejectClassification error " + error);
+  } finally {
+    pool.release();
+  }
+}
+
+async function rejectInventory(inv_id) {
+  // Delete the inventory item
+  try {
+    const sql = `DELETE FROM public.inventory WHERE inv_id = $1 RETURNING *`;
+    return await pool.query(sql, [inv_id]);
+  } catch (error) {
+    console.error("rejectInventory error " + error);
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
@@ -242,4 +297,8 @@ module.exports = {
   getApprovedInventoryByClassificationId,
   getUnapprovedClassifications,
   getUnapprovedInventory,
+  approveClassification,
+  approveInventory,
+  rejectClassification,
+  rejectInventory,
 };

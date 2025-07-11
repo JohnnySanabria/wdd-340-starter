@@ -77,5 +77,25 @@ router.get(
   utilities.checkAdmin,
   invController.buildApprovalList
 );
+router.post(
+  "/approve-classification/:classificationId",
+  utilities.checkAdmin,
+  invController.approveClassification
+);
+router.post(
+  "/approve-inventory/:inventoryId",
+  utilities.checkAdmin,
+  invController.approveInventory
+);
+router.post(
+  "/reject-classification/:classificationId",
+  utilities.checkAdmin,
+  invController.rejectClassification
+);
+router.post(
+  "/reject-inventory/:inventoryId",
+  utilities.checkAdmin,
+  invController.rejectInventory
+);
 
 module.exports = router;
